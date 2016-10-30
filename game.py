@@ -4,9 +4,11 @@ import random
 class Position:
     def __init__(self):
         #attack, defense
-        self.OPlayer = [3, 3]
-        self.XPlayer = [6, 6]
-        self.inplay = 'x'
+        self.OPlayer = [5, 5]
+        self.current0phase = 0
+        self.XPlayer = [5, 5]
+        self.currentXphase = 1
+        self.inplay = '-'
         return
     
     def __repr__(self):
@@ -17,19 +19,20 @@ class Position:
 
 class Encounter:
     
-    def combat(self, board):
-        board.inplay = 'o'
-        return self.combatb(board.OPlayer, board.XPlayer)
+    def combat(self, boardposition):
+        boardposition.inplay = '*'
+        return self.combatb(boardposition.OPlayer, boardposition.current0phase,
+                            boardposition.XPlayer, boardposition.currentXphase)
     
-    def combatb(self, offense, defense):
-        Oroll = offense[0] * self.roll()
-        Xroll = defense[1] * self.roll()
+    def combatb(self, offense, current0phase, defense, currentXphase):
+        Oroll = offense[current0phase] * self.roll()
+        Xroll = defense[currentXphase] * self.roll()
         if Oroll > Xroll:
             return 'offense'
         elif Oroll < Xroll:
             return 'defense'
         else:
-            return 'pass'
+            return 'no-one'
         
     def roll(self):
         return random.randint(1,10)
@@ -38,9 +41,17 @@ class Game:
     def __init__(self):
         self.enc = Encounter()
         self.state = 'start'
-        self.rows = 3
-        self.cols = 3
+        self.rows = 6
+        self.cols = 6
         self.board = []
+        
+        #start in midfield position 2,1
+        #[[x x x x]
+        #[x x o x]
+        #[x x x x]]       
+        self.currentrow = 3
+        self.currentcol = 3
+        
         self.drawboard()
 
     def drawboard(self):
@@ -51,31 +62,60 @@ class Game:
           for column in range(self.cols):
             # Assign x to each row
             self.board[row].append(Position())
+
+    def juke(self):
+        lateral = random.randint(-1,1)
+        passwide = self.currentrow + lateral
+        print ('passing to row %s' % passwide)
+        if(passwide >= 0 and passwide < self.rows):
+            self.currentrow = passwide
+
+    def offensewins(self):
+        print ('offense wins possession and '
+               'chooses where to attack from %s %s' %
+            (self.currentcol, self.currentrow))
+        p = self.currentposition()
+        p.current0phase = 0
+        p.currentXphase = 1
+        p.inplay = 'x'
+        self.juke()
+        self.currentcol = self.currentcol - 1
+        self.gameloop()
+        return
     
+    def defensewins(self):
+        print ('defense wins possession and '
+               'chooses where to attack from %s %s' %
+            (self.currentcol, self.currentrow))
+        p = self.currentposition()
+        p.current0phase = 1
+        p.currentXphase = 0
+        p.inplay = 'o'
+        self.juke()
+        self.currentcol = self.currentcol + 1
+        self.gameloop()
+        return
+
+    def currentposition(self):
+        return self.board[self.currentcol][self.currentrow]
     
     def gameloop(self):
-        #start in midfield position 2,1
-        #[[x x x x]
-        #[x x o x]
-        #[x x x x]]
-        row = 2
-        col = 1
-        battle = self.enc.combat(self.board[col][row])
+        if(self.currentcol >= self.cols or self.currentcol < 0):
+            print ('col max encountered, implement goal')
+            return        
+
+        battle = self.enc.combat(self.board[self.currentcol][self.currentrow])
         while self.state is not 'complete':
             print(battle)
             print(np.matrix(self.board))
-            if(col > self.cols or col < 0):
-                print ('col max encountered')
+            if(battle == 'offense'):
+                self.offensewins()
                 break
-            elif(battle == 'offense'):
-                col = col + 1
-                battle = self.enc.combat(self.board[col][row])
             elif(battle == 'defense'):
-                col = col - 1
-                battle = self.enc.combat(self.board[col][row])
+                self.defensewins()
+                break
             else:
-                battle = self.enc.combat(self.board[col][row])
-
+                battle = self.enc.combat(self.board[self.currentcol][self.currentrow])        
         return
         
 
