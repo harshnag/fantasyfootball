@@ -56,77 +56,77 @@ Plays itself right now, working on adding player support after finising Django v
 	Game time is now 40
 	Game time is now 41
 	Game time is now 42
-Game time is now 43
-Game time is now 44
-Game time is now 45
-Game time is now 46
-Game time is now 47
-Game time is now 48
-Game time is now 49
-Game time is now 50
-Game time is now 51
-Game time is now 52
-Game time is now 53
-Game time is now 54
-Game time is now 55
-away reached byline, attempting to score
-Game time is now 56
-away reached byline, attempting to score
-***Goal! Scored by away team in minute 56***
-Game time is now 57
-Game time is now 58
-Game time is now 59
-away reached byline, attempting to score
-***Goal! Scored by away team in minute 59***
-Game time is now 60
-Game time is now 61
-Game time is now 62
-away reached byline, attempting to score
-***Goal! Scored by away team in minute 62***
-Game time is now 63
-Game time is now 64
-Game time is now 65
-Game time is now 66
-Game time is now 67
-Game time is now 68
-Game time is now 69
-Game time is now 70
-Game time is now 71
-Game time is now 72
-Game time is now 73
-Game time is now 74
-home reached byline, attempting to score
-Game time is now 75
-home reached byline, attempting to score
-Game time is now 76
-home reached byline, attempting to score
-***Goal! Scored by home team in minute 76***
-Game time is now 77
-Game time is now 78
-Game time is now 79
-away reached byline, attempting to score
-Game time is now 80
-Game time is now 81
-Game time is now 82
-Game time is now 83
-Game time is now 84
-Game time is now 85
-Game time is now 86
-Game time is now 87
-home reached byline, attempting to score
-Game time is now 88
-home reached byline, attempting to score
-***Goal! Scored by home team in minute 88***
-Game time is now 89
-Game time is now 90
-Time up!
-Final game state:
-[[0, 0, 0, 0, 1, 1, 9], [0, 0, 0, 0, 1, 1, 1], [0, 0, 0, 1, 2, 0, 1], [0, 0, 2, 2, 1, 1, 1], [0, 1, 2, 1, 2, 2, 1], [0, 1, 9, 2, 2, 1, 1]]
-[[0 0 0 0 1 1 9]
- [0 0 0 0 1 1 1]
- [0 0 0 1 2 0 1]
- [0 0 2 2 1 1 1]
- [0 1 2 1 2 2 1]
- [0 1 9 2 2 1 1]]
-Final score
- Home: 3 Away: 4
+	Game time is now 43
+	Game time is now 44
+	Game time is now 45
+	Game time is now 46
+	Game time is now 47
+	Game time is now 48
+	Game time is now 49
+	Game time is now 50
+	Game time is now 51
+	Game time is now 52
+	Game time is now 53
+	Game time is now 54
+	Game time is now 55
+	away reached byline, attempting to score
+	Game time is now 56
+	away reached byline, attempting to score
+	***Goal! Scored by away team in minute 56***
+	Game time is now 57
+	Game time is now 58
+	Game time is now 59
+	away reached byline, attempting to score
+	***Goal! Scored by away team in minute 59***
+	Game time is now 60
+	Game time is now 61
+	Game time is now 62
+	away reached byline, attempting to score
+	***Goal! Scored by away team in minute 62***
+	Game time is now 63
+	Game time is now 64
+	Game time is now 65
+	Game time is now 66
+	Game time is now 67
+	Game time is now 68
+	Game time is now 69
+	Game time is now 70
+	Game time is now 71
+	Game time is now 72
+	Game time is now 73
+	Game time is now 74
+	home reached byline, attempting to score
+	Game time is now 75
+	home reached byline, attempting to score
+	Game time is now 76
+	home reached byline, attempting to score
+	***Goal! Scored by home team in minute 76***
+	Game time is now 77
+	Game time is now 78
+	Game time is now 79
+	away reached byline, attempting to score
+	Game time is now 80
+	Game time is now 81
+	Game time is now 82
+	Game time is now 83
+	Game time is now 84
+	Game time is now 85
+	Game time is now 86
+	Game time is now 87
+	home reached byline, attempting to score
+	Game time is now 88
+	home reached byline, attempting to score
+	***Goal! Scored by home team in minute 88***
+	Game time is now 89
+	Game time is now 90
+	Time up!
+	Final game state:
+	[[0, 0, 0, 0, 1, 1, 9], [0, 0, 0, 0, 1, 1, 1], [0, 0, 0, 1, 2, 0, 1], [0, 0, 2, 2, 1, 1, 1], [0, 1, 2, 1, 2, 2, 1], [0, 1, 9, 2, 2, 1, 1]]
+	[[0 0 0 0 1 1 9]
+	 [0 0 0 0 1 1 1]
+	 [0 0 0 1 2 0 1]
+	 [0 0 2 2 1 1 1]
+	 [0 1 2 1 2 2 1]
+	 [0 1 9 2 2 1 1]]
+	Final score
+	 Home: 3 Away: 4
