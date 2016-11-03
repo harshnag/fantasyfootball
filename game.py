@@ -5,10 +5,10 @@ class Position:
     def __init__(self):
         #attack, defense
         self.HomePlayer = [5, 5]
-        self.current0phase = 0
+        self.currentHomephase = 0
         self.AwayPlayer = [5, 5]
         self.currentAwayphase = 1
-        self.inplay = '-'
+        self.inplay = '0'
         return
     
     def __repr__(self):
@@ -19,13 +19,12 @@ class Position:
 
 class Encounter:
     
-    def combat(self, boardposition):
-        boardposition.inplay = '*'
-        return self.combatb(boardposition.HomePlayer, boardposition.current0phase,
+    def combat(self, boardposition):     
+        return self.combatb(boardposition.HomePlayer, boardposition.currentHomephase,
                             boardposition.AwayPlayer, boardposition.currentAwayphase)
     
-    def combatb(self, home, current0phase, away, currentAwayphase):
-        Homeroll = home[current0phase] * self.roll()
+    def combatb(self, home, currentHomephase, away, currentAwayphase):
+        Homeroll = home[currentHomephase] * self.roll()
         Awayroll = away[currentAwayphase] * self.roll()
         if Homeroll > Awayroll:
             return 'home'
@@ -42,12 +41,12 @@ class Game:
         self.debug = 0
         self.enc = Encounter()
         self.state = 'start'
-        self.rows = 6
-        self.cols = 6
+        self.rows = 3
+        self.cols = 4
         self.homegoals = 0
         self.awaygoals = 0
         self.time = 0
-        self.timeincrement = 1
+        self.timeincrement = 5
         self.timemax = 90
         self.board = []
         self.setkickoffposition()
@@ -62,33 +61,33 @@ class Game:
         self.currentcol = int(self.cols/2)
         
     def drawboard(self):
-        #Generate rows with length of 4
+        #Generate rows with specified length
         for row in range(self.rows):
-          # Appen a blank list to each row cell
-          self.board.append([Position()])
+          # Append a blank list to each row cell
+          self.board.append([])
           for column in range(self.cols):
-            # Assign x to each row
+            # Assign Position to each row
             self.board[row].append(Position())
 
     def juke(self):
         lateral = random.randint(-1,1)
-        passwide = self.currentrow + lateral
+        passwide = self.currentcol + lateral
         if(self.debug):
-            print ('passing to row %s' % passwide)
-        if(passwide >= 0 and passwide <= self.rows):
-            self.currentrow = passwide
+            print ('lateral passing to col %s' % passwide)
+        if(passwide >= 0 and passwide < self.cols):
+            self.currentcol = passwide
 
     def homewins(self):
         if(self.debug):
             print ('home wins possession and '
                    'chooses where to attack from %s %s' %
-                (self.currentcol, self.currentrow))
+                (self.currentrow, self.currentcol))
         p = self.currentposition()
-        p.current0phase = 0
+        p.currentHomephase = 0
         p.currentAwayphase = 1
-        p.inplay = 'h'
+        p.inplay = '1'
         self.juke()
-        self.currentcol = self.currentcol - 1
+        self.currentrow = self.currentrow - 1
         #self.gameloop()
         return
     
@@ -96,13 +95,13 @@ class Game:
         if(self.debug):
             print ('away wins possession and '
                    'chooses where to attack from %s %s' %
-                (self.currentcol, self.currentrow))
+                (self.currentrow, self.currentcol))
         p = self.currentposition()
-        p.current0phase = 1
+        p.currentHomephase = 1
         p.currentAwayphase = 0
-        p.inplay = 'a'
+        p.inplay = '2'
         self.juke()
-        self.currentcol = self.currentcol + 1
+        self.currentrow = self.currentrow + 1
         #self.gameloop()
         return
 
@@ -114,40 +113,37 @@ class Game:
         return
         
     def currentposition(self):
-        return self.board[self.currentcol][self.currentrow]
+        return self.board[self.currentrow][self.currentcol]
 
     def scoringposition(self):
-        if(self.currentcol >= self.cols):
+        if(self.currentrow >= self.rows):
             print ('away reached byline, attempting to score')
-            battle = self.enc.combat(self.board[self.currentcol-1][self.currentrow])
+            battle = self.enc.combat(self.board[self.currentrow-1][self.currentcol])
             if(self.isgoal('away', battle)):
                 print('***Goal! Scored by away team in minute %s***' % self.time)
                 self.awaygoals = self.awaygoals + 1
                 self.setkickoffposition()
             else:
                 #shot at goal failed
-                self.currentcol = self.currentcol - 1
-        elif (self.currentcol < 0):
+                print ('away failed to score, going back one')
+                self.currentrow = self.currentrow - 1
+        elif (self.currentrow < 0):
             print ('home reached byline, attempting to score')
-            battle = self.enc.combat(self.board[self.currentcol+1][self.currentrow])
+            battle = self.enc.combat(self.board[self.currentrow+1][self.currentcol])
             if(self.isgoal('home', battle)):
                 print('***Goal! Scored by home team in minute %s***' % self.time)
                 self.homegoals = self.homegoals + 1
                 self.setkickoffposition()
             else:
-                self.currentcol = self.currentcol + 1
+                print ('home failed to score, going back one')
+                self.currentrow = self.currentrow + 1
                 
     def gameloop(self):
         while (self.time < self.timemax):
-            self.time = self.time + self.timeincrement
             print('Game time is now %s' % self.time)
-
             self.scoringposition()
-            
-            battle = self.enc.combat(self.board[self.currentcol][self.currentrow])
+            battle = self.enc.combat(self.board[self.currentrow][self.currentcol])
             while self.state is not 'complete':
-                #print(battle)
-                #print(np.matrix(self.board))
                 if(battle == 'home'):
                     self.homewins()
                     break
@@ -155,8 +151,9 @@ class Game:
                     self.awaywins()
                     break
                 else:
-                    battle = self.enc.combat(self.board[self.currentcol][self.currentrow])
-                        
+                    battle = self.enc.combat(self.board[self.currentrow][self.currentcol])
+            self.time = self.time + self.timeincrement
+            
         print('Time up!')
         return
 
@@ -172,8 +169,9 @@ print(np.matrix(g.board))
 
 g.gameloop()
 
-#print (board)
+
 print('Final game state:')
+print(g.board)
 print(np.matrix(g.board))
 print('Final score\n Home: %s Away: %s' % (g.homegoals, g.awaygoals))
       
