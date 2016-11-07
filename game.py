@@ -38,7 +38,7 @@ class Encounter:
 
 class Game:
     def __init__(self):
-        self.debug = 0
+        self.debug = 1
         self.enc = Encounter()
         self.state = 'start'
         self.rows = 3
@@ -82,11 +82,13 @@ class Game:
             print ('home wins possession and '
                    'chooses where to attack from %s %s' %
                 (self.currentrow, self.currentcol))
+        self.juke()    
         p = self.currentposition()
         p.currentHomephase = 0
         p.currentAwayphase = 1
         p.inplay = '1'
-        self.juke()
+        if(self.debug):
+            print(np.matrix(g.board))
         self.currentrow = self.currentrow - 1
         #self.gameloop()
         return
@@ -96,11 +98,13 @@ class Game:
             print ('away wins possession and '
                    'chooses where to attack from %s %s' %
                 (self.currentrow, self.currentcol))
+        self.juke()    
         p = self.currentposition()
         p.currentHomephase = 1
         p.currentAwayphase = 0
         p.inplay = '2'
-        self.juke()
+        if(self.debug):
+            print(np.matrix(g.board))        
         self.currentrow = self.currentrow + 1
         #self.gameloop()
         return
